@@ -42,6 +42,17 @@ Generates the apkovl image and a swap image, by default in /var/lib/libvirt/imag
 
 None of the scripts require root privileges, but the last one needs access to the destination path, and the permissions to connect to libvirt and administer vms (usually granted by group memberships).
 
+## Testing
+
+```bash
+# test create-apkovl script
+tests/test-setup-create-apkovl
+
+# test create-image script
+tests/test-setup-create-image
+```
+Tests run the setup scripts with a temp destination directories to check that they succeed and have the expected output.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
