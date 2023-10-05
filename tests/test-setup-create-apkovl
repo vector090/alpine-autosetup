@@ -1,0 +1,29 @@
+#!/bin/sh
+
+set -e
+
+tmpd=$(mktemp -d)
+
+mkdir ${tmpd}/0
+DESTDIR=${tmpd}/0 ./setup-create-apkovl test0
+
+if [ ! -f ${tmpd}/0/test0.apkovl.tar.gz ]; then
+    echo "cannot find output file ${tmpd}/test0.apkovl.tar.gz"
+    exit 1
+fi
+
+mkdir ${tmpd}/1
+olddir=$(pwd)
+cd ${tmpd}/1
+${olddir}/setup-create-apkovl test1
+
+if [ ! -f ${tmpd}/1/test1.apkovl.tar.gz ]; then
+    echo "cannot find output file ${tmpd}/test1.apkovl.tar.gz"
+    exit 1
+fi
+
+cd -
+
+rm -rf ${tmpd}
+
+echo SUCCESS

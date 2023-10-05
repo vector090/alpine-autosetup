@@ -1,0 +1,58 @@
+# Example answer file for setup-alpine script
+# If you don't want to use a certain option, then comment it out
+
+# Use US layout with US variant
+KEYMAPOPTS="us us"
+
+# Set hostname
+HOSTNAMEOPTS="${host}"
+
+# Set device manager to mdev
+DEVDOPTS=mdev
+
+# Contents of /etc/network/interfaces
+INTERFACESOPTS="auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+"
+
+# Search domain of example.com, Google public nameserver
+# DNSOPTS="-d example.com 8.8.8.8"
+
+# Set timezone to UTC
+TIMEZONEOPTS="UTC"
+
+# set http/ftp proxy
+#PROXYOPTS="http://webproxy:8080"
+PROXYOPTS=none
+
+# Skip repositories setup and rely on our own apk/repositories from autosetup
+APKREPOSOPTS="-h"
+
+empty_root_password=1
+
+# Create admin "alpine" user
+USEROPTS="-a -u -g audio,video,netdev alpine"
+USERSSHKEY="ssh-rsa AAA..." 
+#USERSHKEY="https://example.com/juser.keys"
+
+# Install Openssh
+SSHDOPTS=openssh
+ROOTSSHKEY="ssh-rsa AAA..."
+#ROOTSSHKEY="https://example.com/juser.keys"
+
+# Use openntpd
+NTPOPTS="openntpd"
+
+# Use /dev/sda as a sys disk
+# DISKOPTS="-m sys /dev/sda"
+DISKOPTS=none
+
+# Setup storage with label APKOVL for config storage. This value works well with the default setup-create-image.
+LBUOPTS="LABEL=APKOVL"
+#LBUOPTS="usb"
+
+# Apk cache options. This value works well with the default setup-create-image.
+APKCACHEOPTS="/media/LABEL=APKOVL/cache"

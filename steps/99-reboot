@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Reboot makes sure we are in a pristine state
+reboot

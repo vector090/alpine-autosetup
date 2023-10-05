@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -e
+
+# Call setup-alpine with our preseeded answers.
+setup-alpine -f /etc/autosetup/setup-alpine-answers
+

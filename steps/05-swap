@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+# extract the LABEL of the first TYPE="swap" device with a label
+swaplabel=$(blkid | sed -n -E '/LABEL.*TYPE="swap"/{s/.*LABEL="([a-zA-Z0-9]+)".*/\1/ p;q}')
+
+# enable swap if we found one and it's not there already
+if [ -n "${swaplabel}" ] && grep -vq LABEL=${swaplabel} /etc/fstab; then
+    echo -e "LABEL=${swaplabel} none swap sw 0 0" >> /etc/fstab
+    rc-update add swap default
+    rc-service swap restart
+fi
+

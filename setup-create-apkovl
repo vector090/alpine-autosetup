@@ -1,0 +1,65 @@
+#!/bin/bash
+#
+# Copyright 2023 Guido Trotter <ultrotter@quaqua.net>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the “Software”), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+set -e
+
+host="${1:?Usage: $0 hostname}"
+
+destd="${DESTDIR:-$(pwd)}"
+
+autosetupd=$(dirname $0)
+
+# Create a temporary work directory for the apkovl preparation
+tmptard=$(mktemp -d)
+
+mkdir -p ${tmptard}/etc
+touch ${tmptard}/etc/.default_boot_services
+
+# Set up /etc/init.d/local to run in the default runlevel
+mkdir -p ${tmptard}/etc/runlevels/default
+ln -sf /etc/init.d/local ${tmptard}/etc/runlevels/default
+
+# Set hostname
+echo "${host}" > ${tmptard}/etc/hostname
+
+# Create bootstrap service in local.d
+mkdir -p ${tmptard}/etc/local.d/
+
+cp ${autosetupd}/25-autosetup.start.in ${tmptard}/etc/local.d/25-autosetup.start
+chmod 755 ${tmptard}/etc/local.d/25-autosetup.start
+
+# Use our apk repositories file
+mkdir -p ${tmptard}/etc/apk
+cp ${autosetupd}/apk-repositories.in ${tmptard}/etc/apk/repositories
+
+# Create autosetup config in /etc/autosetup
+mkdir -p ${tmptard}/etc/autosetup
+
+# Write preseed file but replace the host variable
+host=${host} envsubst < ${autosetupd}/setup-alpine-answers.in > ${tmptard}/etc/autosetup/setup-alpine-answers
+touch ${tmptard}/etc/autosetup/do-autosetup
+
+cp -a ${autosetupd}/steps ${tmptard}/etc/autosetup/
+
+# Create apkovl archive in volume root
+tar --owner=0 --group=0 -C ${tmptard} -zcvf ${destd}/${host}.apkovl.tar.gz etc
+rm -rf ${tmptard}

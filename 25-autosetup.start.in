@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+if [ ! -f /etc/autosetup/do-autosetup ]; then
+    exit 0
+fi
+
+# This must be done before calling setup-alpine, as calling it will restart
+# local services, including this one.
+rm /etc/autosetup/do-autosetup 
+
+run-parts /etc/autosetup/steps
+
