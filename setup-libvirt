@@ -36,7 +36,7 @@ chmod 0600 ${destd}/${host}-swap.img
 
 /sbin/mkswap -L ASWVOL ${destd}/${host}-swap.img
 
-host=${host} envsubst < ${autosetupd}/libvirt-domain.xml.in > ${tmpd}/${host}-conf.xml
+host=${host} imgdir=${destd} envsubst < ${autosetupd}/libvirt-domain.xml.in > ${tmpd}/${host}-conf.xml
 
 # create is not persistent:
 # virsh create ${tmpvold}/${host}-conf.xml
