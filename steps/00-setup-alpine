@@ -2,6 +2,17 @@
 
 set -e
 
-# Call setup-alpine with our preseeded answers.
-setup-alpine -f /etc/autosetup/setup-alpine-answers
+# If we are running under tiny-cloud the full setup-alpine is partly replaced by tiny cloud itself
+if [ ! -f /var/lib/cloud/user-data ]; then
+  # Call setup-alpine with our preseeded answers.
+  setup-alpine -f /etc/autosetup/setup-alpine-answers
+else
+  # Only do a smaller setup under tiny-cloud
+  . /etc/autosetup/setup-alpine-answers
 
+  setup-sshd ${ROOTSSHKEY+-k "$ROOTSSHKEY"} ${SSHDOPTS}
+  setup-lbu $LBUOPTS
+  lbu add /root/.ssh
+  lbu add /home/alpine/.ssh
+  setup-apkcache $APKCACHEOPTS
+fi

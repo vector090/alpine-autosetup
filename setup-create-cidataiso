@@ -24,32 +24,30 @@ set -e
 
 host="${1:?Usage: $0 hostname}"
 
+destd="${DESTDIR:-$(pwd)}"
+
 autosetupd=$(dirname $0)
 
-destd="${DESTDIR:-/var/lib/libvirt/images}"
-mode="${MODE:-cidata}"
-tmpd=$(mktemp -d)
+# Create a temporary work directory for the apkovl preparation
+tmpisod=$(mktemp -d)
 
-if [ "${mode}" = "cidata" ]; then
-  DESTDIR=${destd} ${autosetupd}/setup-create-cidataiso ${host}
-  host=${host} imgdir=${destd} envsubst < ${autosetupd}/libvirt-cidata.xml.in > ${tmpd}/${host}-cidata-conf.xml
-  cidata_disk=$(cat ${tmpd}/${host}-cidata-conf.xml)
-  dd if=/dev/zero of=${destd}/${host}-apkovl.img bs=1M count=256
-  /sbin/mkfs.ext4 -O ^has_journal -L APKOVL ${destd}/${host}-apkovl.img
-else
-  DESTDIR=${destd} ${autosetupd}/setup-create-image ${host}
-  cidata_disk=""
-fi
+mkdir -p ${tmpisod}/etc/autosetup
 
-dd if=/dev/zero of=${destd}/${host}-swap.img bs=1M count=1024
-chmod 0600 ${destd}/${host}-swap.img
+# Write preseed file but replace the host variable
+host=${host} envsubst < ${autosetupd}/setup-alpine-answers.in > ${tmpisod}/etc/autosetup/setup-alpine-answers
 
-/sbin/mkswap -L ASWVOL ${destd}/${host}-swap.img
+cp -a ${autosetupd}/steps ${tmpisod}/etc/autosetup/
 
-host=${host} imgdir=${destd} cidata_disk=${cidata_disk} envsubst < ${autosetupd}/libvirt-domain.xml.in > ${tmpd}/${host}-conf.xml
+# Collect some info from our alpine answers file
+. ${tmpisod}/etc/autosetup/setup-alpine-answers
 
-# create is not persistent:
-# virsh create ${tmpd}/${host}-conf.xml
+# Write preseed file but replace the host variable
+host=${host} user_ssh_key=${USERSSHKEY} envsubst < ${autosetupd}/user-data.in > ${tmpisod}/user-data
+host=${host} envsubst < ${autosetupd}/meta-data.in > ${tmpisod}/meta-data
 
-virsh define ${tmpd}/${host}-conf.xml
-virsh start ${host}
+
+# Create cidata iso image
+genisoimage  -output ${destd}/${host}-cidata.iso -volid cidata -joliet -rock ${tmpisod}
+#xorrisofs  -output ${destd}/${host}-cidata.iso -volid cidata -joliet -rock ${tmpisod}
+
+rm -rf ${tmpisod}

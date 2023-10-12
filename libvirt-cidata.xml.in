@@ -1,0 +1,6 @@
+<disk type="file" device="cdrom">
+  <driver name="qemu" type="raw"/>
+  <source file="${imgdir}/${host}-cidata.iso"/>
+  <target dev="sdb" bus="sata"/>
+  <readonly/>
+</disk>

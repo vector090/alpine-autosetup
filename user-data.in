@@ -1,0 +1,18 @@
+#alpine-config
+ssh_authorized_keys:
+  - ${user_ssh_key}
+bootcmd:
+  - mkdir /media/LABEL=APKOVL
+  - mkdir /media/LABEL=cidata
+  - mkdir /etc/autosetup/
+  - mount /dev/disk/by-label/APKOVL /media/LABEL=APKOVL
+  - mount /dev/disk/by-label/cidata /media/LABEL=cidata
+  - cp -a /media/LABEL=cidata/etc/autosetup/* /etc/autosetup/
+  - umount /media/LABEL=cidata
+  - rmdir /media/LABEL=cidata
+apk:
+  repositories:
+    - base_url: https://dl-cdn.alpinelinux.org/alpine/
+      repos: ["main", "community"]
+runcmd:
+  - run-parts /etc/autosetup/steps
