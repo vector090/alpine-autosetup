@@ -39,7 +39,7 @@ chmod 0600 ${destd}/${host}-swap.img
 host=${host} imgdir=${destd} envsubst < ${autosetupd}/libvirt-domain.xml.in > ${tmpd}/${host}-conf.xml
 
 # create is not persistent:
-# virsh create ${tmpvold}/${host}-conf.xml
+# virsh create ${tmpd}/${host}-conf.xml
 
 virsh define ${tmpd}/${host}-conf.xml
 virsh start ${host}
