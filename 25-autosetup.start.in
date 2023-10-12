@@ -8,7 +8,7 @@ fi
 
 # This must be done before calling setup-alpine, as calling it will restart
 # local services, including this one.
-rm /etc/autosetup/do-autosetup 
+rm /etc/autosetup/do-autosetup
 
 run-parts /etc/autosetup/steps
 
