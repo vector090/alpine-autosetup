@@ -4,5 +4,5 @@ set -e
 
 apk update
 apk add qemu-guest-agent
-rc-update add qemu-guest-agent boot
-rc-service qemu-guest-agent restart
+apk add python3
+#apk add udev

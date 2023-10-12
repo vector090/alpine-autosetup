@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+
+rc-update add networking boot
+rc-update add cgroups boot
+rc-update add seedrng boot
+rc-update add qemu-guest-agent boot
+#rc-update add udev boot
+#rc-update add udev-trigger boot
+#rc-update add udev-settle boot
+#rc-update add udev-postmount boot
+
+rc-update add acpid default
+rc-update add crond default
+rc-update add local default
+
+rc-service seedrng restart
+rc-service acpid restart
+rc-service qemu-guest-agent restart
+
+rc-service machine-id restart
