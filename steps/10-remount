@@ -6,7 +6,7 @@ set -e
 . /etc/autosetup/setup-alpine-answers
 
 # Remount apk cache volume read-write so we can install packages
-if [ -n ${APKCACHEOPTS} ]; then
+if [ "${APKCACHEOPTS}" != "none" ]; then
     apkcachevol=$(dirname ${APKCACHEOPTS})
     if grep -q ".* ${apkcachevol}.*ro" /proc/mounts; then
         mount -o remount,rw ${apkcachevol}
