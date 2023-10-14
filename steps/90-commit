@@ -2,4 +2,9 @@
 
 set -e
 
-lbu commit
+. /etc/autosetup/setup-alpine-answers
+
+# Commit status if we have lbu support
+if [ "${LBUOPTS}" != "none" ]; then
+    lbu commit
+fi
