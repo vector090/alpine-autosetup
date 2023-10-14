@@ -17,6 +17,7 @@ The ``apkovl`` can be given to the initial iso in various ways, including in an 
 
 You can customize:
 
+- ``config``: main configuration file to customize your installation. You can also have multiple copies for different templates.
 - ``setup-alpine-answers.in``: note that this script was developed mostly with [diskless installations](https://wiki.alpinelinux.org/wiki/Installation#Diskless_Mode) in mind.
 - ``apk-repositories.in``: it's just your system's /etc/apk/repositories file.
 - ``25-autosetup.start.in``: the local service. Not much to see here, it just starts all the scripts below.
@@ -32,15 +33,17 @@ Generates just the apkovl archive.
 ```bash
 <path>/setup-create-image <hostname>
 ```
-Generates instead an ext4 image labeled ``APKOVL`` and containing the archive, and an empty apk cache.
+Generates an ext4 image. In "apkovl" mode this contains the archive, and an empty apk cache.
 
 ```bash
 <path>/setup-libvirt <hostname>
+# or, alternatively
+CONF=myconfig <path>/setup-libvirt <hostname>
 ```
 Generates the apkovl image and a swap image, by default in /var/lib/libvirt/images, an xml libvirt template, and then uses virsh to start the new machine.
 
-
 None of the scripts require root privileges, but the last one needs access to the destination path, and the permissions to connect to libvirt and administer vms (usually granted by group memberships).
+
 
 ## Testing
 

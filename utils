@@ -20,34 +20,50 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-set -e
 
-host="${1:?Usage: $0 hostname}"
+make_volume () {
+  mode="$1"
+  target="$2"
+  size="$3"
+  fs="$4"
+  label="$5"
+  content="$6"
 
-destd="${DESTDIR:-$(pwd)}"
+  case ${mode} in
+    none)
+        fs="none"
+        ;;
+    dd)
+        dd if=/dev/zero of=${target} bs=1M count=${size}
+        ;;
+    qemu-img)
+        final_target=${target}
+        target=${target}.raw
+        truncate -s ${size} ${target}
+        ;;
+    truncate)
+        truncate -s ${size} ${target}
+        ;;
+    *)
+        echo "ERROR: unknown make_volume mode ${mode}"
+        return 1
+   esac
 
-autosetupd=$(dirname $0)
+   case ${fs} in
+       none)
+           ;;
+       swap)
+           chmod 0600 ${target}
+           /sbin/mkswap -L ${label} ${target}
+           ;;
+       ext4)
+           /sbin/mkfs.ext4 -O ^has_journal -L ${label} -d ${content} ${target}
+           ;;
+   esac
 
-. ${autosetupd}/utils
+   if [ "${mode}" = "qemu-img" ]; then
+     qemu-img convert -f raw -O qcow2 ${target} ${final_target}
+   fi
 
-# load default config, and any override
-. ${autosetupd}/config
-conf_override=${CONF:-${autosetupd}/config}
-. ${conf_override}
-
-# Create a temporary work directory for the volume content
-mode=${MODE:-cidata}
-tmpvold=$(mktemp -d)
-
-if [ ${mode} = "apkovl" ]; then
-  DESTDIR=${tmpvold} ${autosetupd}/setup-create-apkovl ${host}
-  mkdir ${tmpvold}/cache
-  touch ${tmpvold}/cache/.boot_repository
-fi
-
-storage_mode=${STORAGE_MODE:-truncate}
-storage_size=${STORAGE_SIZE:-1G}
-storage_label=${STORAGE_LABEL:-APKOVL}
-make_volume ${storage_mode} ${destd}/${host}-storage.img ${storage_size} ext4 ${storage_label} ${tmpvold}
-
-rm -rf ${tmpvold}
+   return 0
+}

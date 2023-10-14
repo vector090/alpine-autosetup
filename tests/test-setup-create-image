@@ -5,17 +5,17 @@ set -e
 tmpd=$(mktemp -d)
 
 mkdir ${tmpd}/0
-DESTDIR=${tmpd}/0 ./setup-create-image test0
+DESTDIR=${tmpd}/0 MODE=apkovl ./setup-create-image test0
 
-if [ ! -f ${tmpd}/0/test0-apkovl.img ]; then
-    echo "cannot find output file ${tmpd}/0/test0-apkovl.img"
+if [ ! -f ${tmpd}/0/test0-storage.img ]; then
+    echo "cannot find output file ${tmpd}/0/test0-storage.img"
     exit 1
 fi
 
-LSR=$(e2ls -ln ${tmpd}/0/test0-apkovl.img)
+LSR=$(e2ls -ln ${tmpd}/0/test0-storage.img)
 
 if echo ${LSR} | grep -vq test0.apkovl.tar.gz; then
-    echo "cannot find apkovl archive in image"
+    echo "cannot find storage archive in image"
     exit 1
 fi
 
@@ -29,8 +29,8 @@ olddir=$(pwd)
 cd ${tmpd}/1
 ${olddir}/setup-create-image test1
 
-if [ ! -f ${tmpd}/1/test1-apkovl.img ]; then
-    echo "cannot find output file ${tmpd}/1/test1-apkovl.img"
+if [ ! -f ${tmpd}/1/test1-storage.img ]; then
+    echo "cannot find output file ${tmpd}/1/test1-storage.img"
     exit 1
 fi
 

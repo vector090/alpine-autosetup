@@ -38,16 +38,8 @@
   </pm>
   <devices>
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw'/>
-      <source file='${imgdir}/${host}-apkovl.img'/>
-      <target dev='vda' bus='virtio'/>
-    </disk>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw'/>
-      <source file='${imgdir}/${host}-swap.img'/>
-      <target dev='vdb' bus='virtio'/>
-    </disk>
+    ${storage_disk}
+    ${swap_disk}
     <disk type='file' device='cdrom'>
       <driver name='qemu' type='raw'/>
       <source file='${imgdir}/alpine-virt-3.18.4-x86_64.iso'/>

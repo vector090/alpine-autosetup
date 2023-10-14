@@ -1,0 +1,30 @@
+
+# MODE: apkovl or cidata
+MODE="${MODE:-cidata}"
+
+# SWAP_MODE: how to create the swap volume (dd, truncate, qemu-img, none)
+# with dd we will create a non-sparse raw image of size 1M(bs)*SIZE
+# with truncate we will create a sparse raw image of size SIZE
+# with qemu-img we will create a sparse image then convert it to qcow2
+SWAP_MODE=${SWAP_MODE:-dd}
+
+# SWAP_SIZE: create a libvirt swap volume if >0
+SWAP_SIZE=${SWAP_SIZE:-1024}
+
+# SWAP_LABEL: label of the swap volume (in MB)
+SWAP_LABEL=${SWAP_LABEL:-ASWVOL}
+
+# STORAGE_MODE: hoq to create the storage volume (dd, truncate, qemu-img, none)
+STORAGE_MODE=${STORAGE_MODE:-truncate}
+
+# STORAGE_SIZE: size of the storage volume (in MB)
+# with dd we will create a non-sparse raw image of size 1M(bs)*SIZE
+# with truncate we will create a sparse raw image of size SIZE
+# with qemu-img we will create a sparse image then convert it to qcow2
+STORAGE_SIZE=${STORAGE_SIZE:-1G}
+
+# STORAGE_LABEL: size of the storage volume
+# lbu will use LABEL=${STORAGE_LABEL} for lbu backups
+# apk will set cache and autoinstall from /media/LABEL=${STORAGE_LABEL}/cache
+STORAGE_LABEL=${STORAGE_LABEL:-APKOVL}
+
