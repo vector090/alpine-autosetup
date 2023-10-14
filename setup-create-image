@@ -39,13 +39,13 @@ conf_override=${CONF:-${autosetupd}/config}
 mode=${MODE:-cidata}
 tmpvold=$(mktemp -d)
 
-if [ ${mode} = "apkovl" ]; then
+storage_mode=${STORAGE_MODE:-truncate}
+if [ "${mode}" = "apkovl" -a "${storage_mode}" != "none" ]; then
   DESTDIR=${tmpvold} ${autosetupd}/setup-create-apkovl ${host}
   mkdir ${tmpvold}/cache
   touch ${tmpvold}/cache/.boot_repository
 fi
 
-storage_mode=${STORAGE_MODE:-truncate}
 storage_size=${STORAGE_SIZE:-1G}
 storage_label=${STORAGE_LABEL:-APKOVL}
 make_volume ${storage_mode} ${destd}/${host}-storage.img ${storage_size} ext4 ${storage_label} ${tmpvold}
