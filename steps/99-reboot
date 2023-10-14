@@ -1,4 +1,10 @@
 #!/bin/sh
 
-# Reboot makes sure we are in a pristine state
-reboot
+set -e
+
+. /etc/autosetup/setup-alpine-answers
+
+# Reboot only if we have lbu support
+if [ "${LBUOPTS}" != "none" ]; then
+    reboot
+fi
