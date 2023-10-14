@@ -39,12 +39,12 @@ tmpd=$(mktemp -d)
 mode=${MODE:-cidata}
 cidata_disk=""
 if [ "${mode}" = "cidata" ]; then
-  DESTDIR=${destd} ${autosetupd}/setup-create-cidataiso ${host}
+  DESTDIR=${destd} CONF=${CONF} ${autosetupd}/setup-create-cidataiso ${host}
   host=${host} imgdir=${destd} envsubst < ${autosetupd}/libvirt-cidata.xml.in > ${tmpd}/${host}-cidata-conf.xml
   cidata_disk=$(cat ${tmpd}/${host}-cidata-conf.xml)
 fi
 
-DESTDIR=${destd} CONF=${conf_override} ${autosetupd}/setup-create-image ${host}
+DESTDIR=${destd} CONF=${CONF} ${autosetupd}/setup-create-image ${host}
 
 swap_mode=${SWAP_MODE:-dd}
 swap_size=${SWAP_SIZE:-1024}

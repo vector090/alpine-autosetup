@@ -27,24 +27,36 @@ host="${1:?Usage: $0 hostname}"
 destd="${DESTDIR:-$(pwd)}"
 
 autosetupd=$(dirname $0)
+. ${autosetupd}/utils
+
+# load default config, and any override
+. ${autosetupd}/config
+conf_override=${CONF:-${autosetupd}/config}
+. ${conf_override}
 
 # Create a temporary work directory for the apkovl preparation
 tmpisod=$(mktemp -d)
 
 mkdir -p ${tmpisod}/etc/autosetup
 
-# Write preseed file but replace the host variable
-host=${host} envsubst < ${autosetupd}/setup-alpine-answers.in > ${tmpisod}/etc/autosetup/setup-alpine-answers
+# Write alpine answers file
+storage_mode=${STORAGE_MODE:-truncate}
+storage_label=${STORAGE_LABEL:-APKOVL}
+make_alpine_answers ${tmpisod}/etc/autosetup ${host} ${storage_mode} ${storage_label}
 
 cp -a ${autosetupd}/steps ${tmpisod}/etc/autosetup/
 
 # Collect some info from our alpine answers file
 . ${tmpisod}/etc/autosetup/setup-alpine-answers
 
-# Write preseed file but replace the host variable
-host=${host} user_ssh_key=${USERSSHKEY} envsubst < ${autosetupd}/user-data.in > ${tmpisod}/user-data
-host=${host} envsubst < ${autosetupd}/meta-data.in > ${tmpisod}/meta-data
+# Write user-data file but replace some variables
+mount_storage="echo 'no local storage to mount'"
+if [ "${storage_mode}" != "none" ]; then
+  mount_storage="mkdir -p /media/LABEL=${storage_label} && mount /dev/disk/by-label/${storage_label} /media/LABEL=${storage_label}"
+fi
 
+host=${host} user_ssh_key=${USERSSHKEY} mount_storage=${mount_storage} envsubst < ${autosetupd}/user-data.in > ${tmpisod}/user-data
+host=${host} envsubst < ${autosetupd}/meta-data.in > ${tmpisod}/meta-data
 
 # Create cidata iso image
 genisoimage  -output ${destd}/${host}-cidata.iso -volid cidata -joliet -rock ${tmpisod}

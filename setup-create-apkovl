@@ -27,6 +27,7 @@ host="${1:?Usage: $0 hostname}"
 destd="${DESTDIR:-$(pwd)}"
 
 autosetupd=$(dirname $0)
+. ${autosetupd}/utils
 
 # Create a temporary work directory for the apkovl preparation
 tmptard=$(mktemp -d)
@@ -54,8 +55,11 @@ cp ${autosetupd}/apk-repositories.in ${tmptard}/etc/apk/repositories
 # Create autosetup config in /etc/autosetup
 mkdir -p ${tmptard}/etc/autosetup
 
-# Write preseed file but replace the host variable
-host=${host} envsubst < ${autosetupd}/setup-alpine-answers.in > ${tmptard}/etc/autosetup/setup-alpine-answers
+# Write alpine answers file
+storage_mode=${STORAGE_MODE:-truncate}
+storage_label=${STORAGE_LABEL:-APKOVL}
+make_alpine_answers ${tmptard} ${host} ${storage_mode} ${storage_label}
+
 touch ${tmptard}/etc/autosetup/do-autosetup
 
 cp -a ${autosetupd}/steps ${tmptard}/etc/autosetup/

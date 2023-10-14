@@ -50,9 +50,8 @@ NTPOPTS="openntpd"
 # DISKOPTS="-m sys /dev/sda"
 DISKOPTS=none
 
-# Setup storage with label APKOVL for config storage. This value works well with the default setup-create-image.
-LBUOPTS="LABEL=APKOVL"
-#LBUOPTS="usb"
+# Setup config storage, if possible. This value works well with the default setup-create-image.
+LBUOPTS="${lbuopts}"
 
 # Apk cache options. This value works well with the default setup-create-image.
-APKCACHEOPTS="/media/LABEL=APKOVL/cache"
+APKCACHEOPTS="${apkcacheopts}"

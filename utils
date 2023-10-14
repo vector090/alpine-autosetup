@@ -67,3 +67,20 @@ make_volume () {
 
    return 0
 }
+
+make_alpine_answers () {
+  destdir="$1"
+  host="$2"
+  storage_mode="$3"
+  storage_label="$4"
+
+  lbuopts="none"
+  apkcacheopts="none"
+  if [ "${storage_mode}" != "none" ]; then
+      lbuopts="LABEL=${storage_label}"
+      apkcacheopts="/media/LABEL=${storage_label}/cache"
+  fi
+
+  host=${host} lbuopts=${lbuopts} apkcacheopts=${apkcacheopts} envsubst < ${autosetupd}/setup-alpine-answers.in > ${destdir}/setup-alpine-answers
+
+}
