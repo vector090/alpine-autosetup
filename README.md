@@ -4,8 +4,15 @@ Alpine autosetup is a helper to make auto-install possible on Alpine Linux.
 
 ## Basic idea
 
-Alpine autosetup can work in two modes. In ``cidata`` mode it will create a tiny-cloud config to execute itself on first boot.
-This can be distributed for example as an extra iso filesystem attached to a virtual machine, or in a usb key formatted in iso mode.
+Alpine autosetup can work in two modes.
+
+In ``cidata`` mode it will create a tiny-cloud config to execute itself on first boot.
+This can be distributed for example as an extra iso filesystem attached to a virtual machine,
+or in a usb key formatted in iso mode. It contains:
+
+- Config for ``tiny-cloud``: ``user-data`` and ``meta-data``.
+- Autosetup scripts and configs.
+- The ``user-data`` script is used to copy and then call into autosetup.
 
 In ``apkovl`` mode it  will create a minimal ``host.apkovl.tar.gz`` containing:
 
