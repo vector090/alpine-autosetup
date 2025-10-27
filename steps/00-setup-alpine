@@ -1,14 +1,14 @@
 #!/bin/sh
 
-# set -e
+set -e
 
-# I simply want full install
-setup-alpine -f /etc/autosetup/setup-alpine-answers
-
-is_postinstall=$(df / | grep -c 'sda')
+# is_postinstall=$(df / | grep -c 'sda')
+is_postinstall=$(df / | grep -c 'sda' || true) # fuck ash
 if [ "${is_postinstall}" -eq 0 ]
 then
-    echo is live system
+    echo now is live system. will install to disk
+
+setup-alpine -f /etc/autosetup/setup-alpine-answers
 
 # use proxy
 . /etc/profile.d/proxy.sh

@@ -2,8 +2,8 @@
 
 # after setup-alpine and reboot,
 
-is_postinstall=$(df / | grep -c 'sda')
-if [ $is_postinstall -eq 0 ]
+is_postinstall=$(df / | grep -c 'sda' || true )
+if [ "${is_postinstall}" -eq 0 ]
 then
     # is live system
     echo not post-install. skip.
