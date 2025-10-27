@@ -15,3 +15,4 @@ apk:
       repos: ["main", "community"]
 runcmd:
   - run-parts /etc/autosetup/steps
+  - date >> /root/postinstall.txt

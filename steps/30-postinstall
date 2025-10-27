@@ -1,8 +1,15 @@
 #!/bin/sh
 
-
 # after setup-alpine and reboot,
-# copy - past content to vm console to run
+
+is_postinstall=$(df / | grep -c 'sda')
+if [ $is_postinstall -eq 0 ]
+then
+    # is live system
+    echo not post-install. skip.
+    exit
+fi
+
 
 mkdir -p /host/
 # mount -t 9p -o trans=virtio hostslash /host/
@@ -13,6 +20,7 @@ mount -a
 
 ln -s /host/root/* /root/
 ln -sf /root/ws/virtual_machine/qemu/b/alpine/root/.??* /root/
+ln -sf /root/ws/virtual_machine/qemu/b/alpine/files/etc/local.d/proxy_vm_host.sh /etc/locale.d/
 
 # still need to do this, sice community is commented out by default
 echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/main" > /etc/apk/repositories
@@ -39,12 +47,10 @@ command -v frpc || cp /host/usr/local/bin/frpc /usr/local/bin/
 apk add docker docker-cli-compose 
 service docker start
 
-echo "测试Docker版本..."
 docker --version
 
 # 等待Docker完全启动
 sleep 3
 
 # 测试拉取镜像（通过代理）
-echo "测试拉取镜像..."
-docker run --rm alpine echo "Docker配置成功！"
+docker run --rm alpine echo "Docker functions OK"

@@ -6,8 +6,9 @@ set -e
 
 # Reboot only if we have lbu support
 if [ "${LBUOPTS}" != "none" ]; then
-    # reboot
+    reboot
+    # restart with iso still mounted is ok, though re-run steps wastes some time
 
-    poweroff
+    # poweroff
     # give me chance to change vm options, e.g. remove iso
 fi
