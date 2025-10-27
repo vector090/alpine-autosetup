@@ -5,6 +5,9 @@ set -e
 # I simply want full install
 setup-alpine -f /etc/autosetup/setup-alpine-answers
 
+# use proxy
+source /etc/profile.d/proxy.sh
+
 # fully auto install to disk
 export ERASE_DISKS=/dev/sda
 setup-disk -m sys $ERASE_DISKS

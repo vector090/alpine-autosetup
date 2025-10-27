@@ -1,2 +1,2 @@
 
-apt install -y genisoimage
+apt install -y genisoimage gettext-base
