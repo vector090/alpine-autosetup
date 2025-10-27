@@ -1,21 +1,24 @@
 #!/bin/sh
 
-set -e
+# set -e
 
-is_postinstall=$(df / | grep -c 'sda')
-if [ $is_postinstall -eq 0 ]
-then
-    # is live system
 # I simply want full install
 setup-alpine -f /etc/autosetup/setup-alpine-answers
 
+is_postinstall=$(df / | grep -c 'sda')
+if [ "${is_postinstall}" -eq 0 ]
+then
+    echo is live system
+
 # use proxy
-source /etc/profile.d/proxy.sh
+. /etc/profile.d/proxy.sh
 
 # fully auto install to disk
 export ERASE_DISKS=/dev/sda
 setup-disk -m sys $ERASE_DISKS
+
 fi
+
 
 
 exit

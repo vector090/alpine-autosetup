@@ -18,6 +18,6 @@ rc-update add local default
 
 rc-service seedrng restart
 rc-service acpid restart
-rc-service qemu-guest-agent restart
+# rc-service qemu-guest-agent restart
 
 rc-service machine-id restart
