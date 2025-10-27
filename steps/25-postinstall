@@ -1,0 +1,46 @@
+#!/bin/sh
+
+
+# after setup-alpine and reboot,
+# copy - past content to vm console to run
+
+mkdir -p /host/
+# mount -t 9p -o trans=virtio hostslash /host/
+
+echo 'hostslash /host   9p trans=virtio,version=9p2000.L,rw 0 0' >> /etc/fstab
+mount -a
+
+
+ln -s /host/root/* /root/
+ln -sf /root/ws/virtual_machine/qemu/b/alpine/root/.??* ~/
+
+# still need to do this, sice community is commented out by default
+echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/main" > /etc/apk/repositories
+echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repositories
+
+# mkdir -p ~/.ssh/
+# echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHI1tpWdNLeV1gwlZBqsmgSREh/njoPj8wbNF8ATWgcP root@eais-bjts6kvodpl1gdpez9p9-0' >> ~/.ssh/authorized_keys
+
+
+apk add bash procps curl wget vim shadow sudo tmux
+
+chsh -s /bin/bash root
+
+command -v gost || cp /host/usr/local/bin/gost /usr/local/bin/
+command -v frpc || cp /host/usr/local/bin/frpc /usr/local/bin/
+
+
+
+# docker
+apk add docker docker-cli-compose 
+service docker start
+
+echo "测试Docker版本..."
+docker --version
+
+# 等待Docker完全启动
+sleep 3
+
+# 测试拉取镜像（通过代理）
+echo "测试拉取镜像..."
+docker run --rm alpine echo "Docker配置成功！"
