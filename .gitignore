@@ -1,3 +1,4 @@
 *.iso
 *.apkovl.tar.gz
 *.img
+run-*.sh

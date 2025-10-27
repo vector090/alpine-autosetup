@@ -44,7 +44,8 @@ USERSSHKEY="ssh-rsa AAA..."
 # Install Openssh
 SSHDOPTS=openssh
 #ROOTSSHKEY="ssh-rsa AAA..."
-ROOTSSHKEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOIiHcbg/7ytfLFHUNLRgEAubFz/13SwXBOM/05GNZe4 juser@example.com"
+#ROOTSSHKEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOIiHcbg/7ytfLFHUNLRgEAubFz/13SwXBOM/05GNZe4 juser@example.com"
+ROOTSSHKEY='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHI1tpWdNLeV1gwlZBqsmgSREh/njoPj8wbNF8ATWgcP root@eais-bjts6kvodpl1gdpez9p9-0'
 #ROOTSSHKEY="https://example.com/juser.keys"
 
 # Use openntpd
