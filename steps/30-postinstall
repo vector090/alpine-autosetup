@@ -10,6 +10,9 @@ then
     exit
 fi
 
+# if docker already installed, then exit
+command -v docker && exit
+
 
 mkdir -p /host/
 # mount -t 9p -o trans=virtio hostslash /host/
@@ -20,7 +23,12 @@ mount -a
 
 ln -s /host/root/* /root/
 ln -sf /root/ws/virtual_machine/qemu/b/alpine/root/.??* /root/
-ln -sf /root/ws/virtual_machine/qemu/b/alpine/files/etc/local.d/proxy_vm_host.sh /etc/locale.d/
+
+ln -sf /root/ws/virtual_machine/qemu/b/alpine/files/etc/local.d/proxy_vm_host.sh /etc/local.d/
+# cp -fv /root/ws/virtual_machine/qemu/b/alpine/files/etc/local.d/proxy_vm_host.sh /etc/local.d/
+# service local start
+rc-update add local default
+
 
 # still need to do this, sice community is commented out by default
 echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/main" > /etc/apk/repositories
