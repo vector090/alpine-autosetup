@@ -10,4 +10,4 @@ echo CIDATA
 echo APKOVL
 export MODE=apkovl
 # ./setup-create-apkovl $HOST
-./setup-create-image $HOST # already auto call setup-create-apkovl
+# ./setup-create-image $HOST # already auto call setup-create-apkovl

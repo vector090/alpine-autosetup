@@ -6,5 +6,8 @@ set -e
 
 # Reboot only if we have lbu support
 if [ "${LBUOPTS}" != "none" ]; then
-    reboot
+    # reboot
+
+    poweroff
+    # give me chance to change vm options, e.g. remove iso
 fi
