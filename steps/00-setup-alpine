@@ -2,6 +2,18 @@
 
 set -e
 
+# I simply want full install
+setup-alpine -f /etc/autosetup/setup-alpine-answers
+
+# fully auto install to disk
+export ERASE_DISKS=/dev/sda
+setup-disk -m sys $ERASE_DISKS
+
+
+exit
+
+
+
 # If we are running under tiny-cloud the full setup-alpine is partly replaced by tiny cloud itself
 if [ ! -f /var/lib/cloud/user-data ]; then
   # Call setup-alpine with our preseeded answers.

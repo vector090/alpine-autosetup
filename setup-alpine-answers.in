@@ -52,12 +52,13 @@ ROOTSSHKEY='ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHI1tpWdNLeV1gwlZBqsmgSREh/njoPj
 NTPOPTS="openntpd"
 
 # Use /dev/sda as a sys disk
-DISKOPTS="-m sys /dev/sda"
-#DISKOPTS=none
+#DISKOPTS="-m sys /dev/sda"
+DISKOPTS=none
+# no good to setup disk here, since needs manual confirm. let's do it outside and add some hack to be fully unattended.
 
 # Setup config storage, if possible. This value works well with the default setup-create-image.
-#LBUOPTS="${lbuopts}"
-LBUOPTS=none
+LBUOPTS="${lbuopts}"
+#LBUOPTS=none
 
 # Apk cache options. This value works well with the default setup-create-image.
 #APKCACHEOPTS="${apkcacheopts}"
