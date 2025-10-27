@@ -12,15 +12,19 @@ mount -a
 
 
 ln -s /host/root/* /root/
-ln -sf /root/ws/virtual_machine/qemu/b/alpine/root/.??* ~/
+ln -sf /root/ws/virtual_machine/qemu/b/alpine/root/.??* /root/
 
 # still need to do this, sice community is commented out by default
 echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/main" > /etc/apk/repositories
 echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repositories
 
+# already done in answer file
 # mkdir -p ~/.ssh/
 # echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHI1tpWdNLeV1gwlZBqsmgSREh/njoPj8wbNF8ATWgcP root@eais-bjts6kvodpl1gdpez9p9-0' >> ~/.ssh/authorized_keys
 
+
+# use proxy
+source /etc/profile.d/proxy.sh
 
 apk add bash procps curl wget vim shadow sudo tmux
 
