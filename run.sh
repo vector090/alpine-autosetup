@@ -1,3 +1,8 @@
 
-./setup-create-cidataiso vm1
+HOST=vm1
+
+./setup-create-apkovl $HOST
+./setup-create-image $HOST
+
+./setup-create-cidataiso $HOST
 

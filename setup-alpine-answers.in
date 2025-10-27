@@ -26,10 +26,13 @@ TIMEZONEOPTS="UTC"
 
 # set http/ftp proxy
 #PROXYOPTS="http://webproxy:8080"
-PROXYOPTS=none
+#PROXYOPTS=none
+PROXYOPTS="http://10.0.2.2:8118"
 
 # Skip repositories setup and rely on our own apk/repositories from autosetup
-APKREPOSOPTS="-h"
+#APKREPOSOPTS="-h"
+# Add first mirror (CDN)
+APKREPOSOPTS="-1"
 
 empty_root_password=1
 
@@ -40,18 +43,21 @@ USERSSHKEY="ssh-rsa AAA..."
 
 # Install Openssh
 SSHDOPTS=openssh
-ROOTSSHKEY="ssh-rsa AAA..."
+#ROOTSSHKEY="ssh-rsa AAA..."
+ROOTSSHKEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOIiHcbg/7ytfLFHUNLRgEAubFz/13SwXBOM/05GNZe4 juser@example.com"
 #ROOTSSHKEY="https://example.com/juser.keys"
 
 # Use openntpd
 NTPOPTS="openntpd"
 
 # Use /dev/sda as a sys disk
-# DISKOPTS="-m sys /dev/sda"
-DISKOPTS=none
+DISKOPTS="-m sys /dev/sda"
+#DISKOPTS=none
 
 # Setup config storage, if possible. This value works well with the default setup-create-image.
-LBUOPTS="${lbuopts}"
+#LBUOPTS="${lbuopts}"
+LBUOPTS=none
 
 # Apk cache options. This value works well with the default setup-create-image.
-APKCACHEOPTS="${apkcacheopts}"
+#APKCACHEOPTS="${apkcacheopts}"
+APKCACHEOPTS=none
