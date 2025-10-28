@@ -71,5 +71,5 @@ cat << EOF > /etc/profile.d/proxy.sh
 export http_proxy=http://10.0.2.2:8118
 export https_proxy=http://10.0.2.2:8118
 export ftp_proxy=http://10.0.2.2:8118
-export no_proxy=localhost,vm1,10.0.2.15
+export no_proxy=localhost,vm1,10.0.2.15,127.0.0.1
 EOF
