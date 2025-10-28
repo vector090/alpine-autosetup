@@ -22,6 +22,7 @@ mount -a
 
 
 ln -s /host/root/* /root/
+ln -s /host/root/.tmux.conf /root/
 ln -sf /root/ws/virtual_machine/qemu/b/alpine/root/.??* /root/
 
 ln -sf /root/ws/virtual_machine/qemu/b/alpine/files/etc/local.d/proxy_vm_host.sh /etc/local.d/
@@ -42,7 +43,7 @@ echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/reposit
 # use proxy
 . /etc/profile.d/proxy.sh
 
-apk add bash procps curl wget vim shadow sudo tmux
+apk add bash procps curl wget vim shadow sudo tmux ncdu
 
 chsh -s /bin/bash root
 
