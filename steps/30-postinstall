@@ -23,6 +23,7 @@ mount -a
 
 ln -s /host/root/* /root/
 ln -s /host/root/.tmux.conf /root/
+ln -s /host/root/.vimrc /root/
 ln -sf /root/ws/virtual_machine/qemu/b/alpine/root/.??* /root/
 
 ln -sf /root/ws/virtual_machine/qemu/b/alpine/files/etc/local.d/proxy_vm_host.sh /etc/local.d/
