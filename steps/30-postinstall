@@ -44,7 +44,7 @@ echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/reposit
 # use proxy
 . /etc/profile.d/proxy.sh
 
-apk add bash procps curl wget vim shadow sudo tmux ncdu
+apk add bash procps curl wget vim shadow sudo tmux ncdu git
 
 chsh -s /bin/bash root
 
