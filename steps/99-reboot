@@ -6,8 +6,12 @@ set -e
 
 # Reboot only if we have lbu support
 if [ "${LBUOPTS}" != "none" ]; then
-    echo will reboot
-    # reboot
+
+    TMOUT=5
+    echo will reboot in $TMOUT seconds
+    sleep $TMOUT
+
+    reboot
     # restart with iso still mounted is ok, though re-run steps wastes some time
 
     # poweroff
