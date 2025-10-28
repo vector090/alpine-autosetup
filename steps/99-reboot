@@ -8,7 +8,7 @@ set -e
 if [ "${LBUOPTS}" != "none" ]; then
 
     TMOUT=5
-    echo will reboot in $TMOUT seconds
+    echo will reboot in $TMOUT seconds. Press Ctrl-C to abort.
     sleep $TMOUT
 
     reboot
