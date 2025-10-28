@@ -2,6 +2,21 @@
 
 set -e
 
+if command -v docker
+then
+    echo OK. no reboot
+else
+    TMOUT=5
+    echo Will reboot in $TMOUT seconds to complete setup. Press Ctrl-C to abort.
+    sleep $TMOUT
+
+    reboot
+fi
+
+
+exit
+
+
 . /etc/autosetup/setup-alpine-answers
 
 # Reboot only if we have lbu support
